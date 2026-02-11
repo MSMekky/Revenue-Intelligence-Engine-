@@ -3,20 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Revenue Intelligence™ - Live Demo</title>
+    <title>Revenue Intelligence™ — Live Demo</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            /* Dark sophisticated palette */
             --bg-primary: #0a0e14;
             --bg-secondary: #151b26;
             --bg-card: #1a2332;
@@ -39,15 +34,12 @@
             line-height: 1.6;
         }
 
-        /* Animated background grid */
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image:
                 linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px),
                 linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
             background-size: 50px 50px;
@@ -69,7 +61,6 @@
             z-index: 1;
         }
 
-        /* Header */
         .header {
             display: flex;
             justify-content: space-between;
@@ -102,8 +93,7 @@
         }
 
         .pulse {
-            width: 8px;
-            height: 8px;
+            width: 8px; height: 8px;
             background: var(--accent-green);
             border-radius: 50%;
             animation: pulse 2s ease-in-out infinite;
@@ -115,7 +105,6 @@
             50% { opacity: 0.5; transform: scale(1.2); }
         }
 
-        /* Main Grid */
         .grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -125,6 +114,7 @@
 
         @media (max-width: 1024px) {
             .grid { grid-template-columns: 1fr; }
+            .hero-stat { grid-column: span 1 !important; }
         }
 
         .card {
@@ -140,18 +130,14 @@
         .card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
+            top: 0; left: 0;
+            width: 100%; height: 4px;
             background: linear-gradient(90deg, transparent, var(--accent-green), transparent);
             opacity: 0;
             transition: opacity 0.3s ease;
         }
 
-        .card:hover::before {
-            opacity: 1;
-        }
+        .card:hover::before { opacity: 1; }
 
         .card-title {
             font-size: 0.875rem;
@@ -162,7 +148,6 @@
             font-weight: 600;
         }
 
-        /* Hero Stats */
         .hero-stat {
             grid-column: span 2;
             background: linear-gradient(135deg, var(--bg-card) 0%, rgba(255, 71, 87, 0.05) 100%);
@@ -192,9 +177,7 @@
             border-top: 1px solid var(--border);
         }
 
-        .impact-item {
-            flex: 1;
-        }
+        .impact-item { flex: 1; }
 
         .impact-label {
             font-size: 0.75rem;
@@ -211,14 +194,15 @@
             color: var(--accent-red);
         }
 
-        /* Revenue Comparison */
-        .revenue-bars {
-            margin-top: 2rem;
+        .impact-note {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            margin-top: 0.15rem;
+            font-style: italic;
         }
 
-        .revenue-row {
-            margin-bottom: 1rem;
-        }
+        .revenue-bars { margin-top: 2rem; }
+        .revenue-row { margin-bottom: 1rem; }
 
         .revenue-label {
             display: flex;
@@ -228,8 +212,7 @@
         }
 
         .bar-container {
-            width: 100%;
-            height: 40px;
+            width: 100%; height: 40px;
             background: rgba(255, 255, 255, 0.03);
             border-radius: 10px;
             overflow: hidden;
@@ -246,10 +229,8 @@
         .bar::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
             animation: shimmer 2s infinite;
         }
@@ -262,12 +243,10 @@
         .bar-expected {
             background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
         }
-
         .bar-actual {
             background: linear-gradient(90deg, var(--accent-orange), var(--accent-red));
         }
 
-        /* Root Cause Alert */
         .alert {
             background: linear-gradient(135deg, rgba(255, 71, 87, 0.1) 0%, rgba(255, 71, 87, 0.05) 100%);
             border-left: 4px solid var(--accent-red);
@@ -284,8 +263,7 @@
         }
 
         .alert-icon {
-            width: 32px;
-            height: 32px;
+            width: 32px; height: 32px;
             background: var(--accent-red);
             border-radius: 8px;
             display: flex;
@@ -324,7 +302,6 @@
             margin: 0.25rem 0.25rem 0.25rem 0;
         }
 
-        /* Action Button */
         .action-button {
             width: 100%;
             background: linear-gradient(135deg, var(--accent-red), #ff6b81);
@@ -348,11 +325,8 @@
             box-shadow: 0 15px 40px rgba(255, 71, 87, 0.4);
         }
 
-        .action-button:active {
-            transform: translateY(0);
-        }
+        .action-button:active { transform: translateY(0); }
 
-        /* Metrics Grid */
         .metrics {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -382,10 +356,7 @@
             color: var(--accent-green);
         }
 
-        /* Timeline */
-        .timeline {
-            margin-top: 2rem;
-        }
+        .timeline { margin-top: 2rem; }
 
         .timeline-item {
             display: flex;
@@ -402,9 +373,7 @@
             min-width: 80px;
         }
 
-        .timeline-content {
-            flex: 1;
-        }
+        .timeline-content { flex: 1; }
 
         .timeline-event {
             font-weight: 600;
@@ -417,7 +386,6 @@
             font-size: 0.875rem;
         }
 
-        /* Footer */
         .footer {
             text-align: center;
             margin-top: 3rem;
@@ -439,6 +407,24 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
+
+        .footnote {
+            margin-top: 1.5rem;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .footnote strong {
+            color: var(--text-primary);
+        }
     </style>
 </head>
 <body>
@@ -447,29 +433,59 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        function RevenueIntelligenceDemo() {
-            const [currentLoss, setCurrentLoss] = useState(350);
-            const [expectedRevenue, setExpectedRevenue] = useState(3800);
-            const [actualRevenue, setActualRevenue] = useState(3450);
-            const [elapsedHours, setElapsedHours] = useState(2.3);
-            const [costSoFar, setCostSoFar] = useState(805);
+        /*
+         * ═══════════════════════════════════════════════════════════
+         * REVENUE INTELLIGENCE™ — CALCULATION ENGINE
+         * ═══════════════════════════════════════════════════════════
+         *
+         * BASE RATE:       €350/hour  |  €5.83/minute
+         * PEAK SUN HOURS:  4.5 PSH (Central European average)
+         *
+         * LIVE INCIDENT figures (Daily/Monthly):
+         *   These show the "if this continues at current rate"
+         *   value for operational urgency during an active event.
+         *   Daily  = €350/hr × 24hr = €8,400
+         *   Monthly = €8,400 × 30   = €252,000
+         *
+         * ANNUAL PROJECTION (PSH-weighted):
+         *   Solar plants only generate during sunlight hours.
+         *   Annual = €350/hr × 4.5 PSH × 365 = €574,875
+         *   This is the realistic financial planning figure.
+         *
+         * COST SO FAR = Elapsed Hours × €350  (always consistent)
+         * ═══════════════════════════════════════════════════════════
+         */
 
-            // Simulate real-time updates
+        const HOURLY_LOSS = 350;           // €/hour — the single source of truth
+        const COST_PER_MINUTE = HOURLY_LOSS / 60; // €5.833.../min
+        const PEAK_SUN_HOURS = 4.5;        // PSH for annual projection
+
+        function RevenueIntelligenceDemo() {
+            const [elapsedHours, setElapsedHours] = useState(4.5);
+            const [expectedRevenue] = useState(3800);
+            const [actualRevenue] = useState(3450);
+
+            // Derived — always computed from elapsedHours × HOURLY_LOSS
+            const costSoFar = elapsedHours * HOURLY_LOSS;
+
+            // Impact projections
+            const dailyLoss = HOURLY_LOSS * 24;            // €8,400 (active incident rate)
+            const monthlyLoss = dailyLoss * 30;             // €252,000
+            const annualLoss = HOURLY_LOSS * PEAK_SUN_HOURS * 365; // €574,875 (PSH-weighted)
+
+            const actualPercentage = (actualRevenue / expectedRevenue) * 100;
+
+            // Simulate real-time clock (every 6s = +0.1 demo hours)
             useEffect(() => {
                 const interval = setInterval(() => {
-                    setElapsedHours(prev => prev + 0.1);
-                    setCostSoFar(prev => prev + (350 / 60)); // €350/hour = €5.83/min
-                }, 6000); // Update every 6 seconds for demo
-
+                    setElapsedHours(prev => +(prev + 0.1).toFixed(1));
+                }, 6000);
                 return () => clearInterval(interval);
             }, []);
 
-            const dailyLoss = currentLoss * 24;
-            const monthlyLoss = dailyLoss * 30;
-            const yearlyLoss = dailyLoss * 365;
-
-            const expectedPercentage = 100;
-            const actualPercentage = (actualRevenue / expectedRevenue) * 100;
+            // Savings calculation: hours remaining today × hourly rate
+            const hoursLeftToday = Math.max(0, 24 - elapsedHours);
+            const savingsIf2hr = (hoursLeftToday - 2) * HOURLY_LOSS;
 
             return (
                 <div className="container">
@@ -484,34 +500,43 @@
 
                     {/* Main Grid */}
                     <div className="grid">
-                        {/* Hero - Current Leakage */}
+                        {/* ── Hero: Current Leakage ── */}
                         <div className="card hero-stat">
                             <div className="card-title">⚠️ CRITICAL: Revenue Leakage Detected</div>
                             <div className="stat-label">Current Loss Rate</div>
                             <div className="stat-value" style={{color: 'var(--accent-red)'}}>
-                                €{currentLoss.toLocaleString()}/hr
+                                €{HOURLY_LOSS.toLocaleString()}/hr
                             </div>
-                            
+
                             <div className="stat-impact">
                                 <div className="impact-item">
                                     <div className="impact-label">Daily Impact</div>
-                                    <div className="impact-value">€{dailyLoss.toLocaleString()}</div>
+                                    <div className="impact-value">
+                                        €{dailyLoss.toLocaleString()}
+                                    </div>
+                                    <div className="impact-note">at current rate</div>
                                 </div>
                                 <div className="impact-item">
                                     <div className="impact-label">Monthly Impact</div>
-                                    <div className="impact-value">€{monthlyLoss.toLocaleString()}</div>
+                                    <div className="impact-value">
+                                        €{monthlyLoss.toLocaleString()}
+                                    </div>
+                                    <div className="impact-note">30-day projection</div>
                                 </div>
                                 <div className="impact-item">
                                     <div className="impact-label">Annual Impact</div>
-                                    <div className="impact-value">€{yearlyLoss.toLocaleString()}</div>
+                                    <div className="impact-value">
+                                        €{annualLoss.toLocaleString()}
+                                    </div>
+                                    <div className="impact-note">PSH-weighted (4.5h/day)</div>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Revenue Comparison */}
+                        {/* ── Revenue Comparison ── */}
                         <div className="card">
                             <div className="card-title">Real-Time Revenue Analysis</div>
-                            
+
                             <div className="revenue-bars">
                                 <div className="revenue-row">
                                     <div className="revenue-label">
@@ -521,7 +546,7 @@
                                         </span>
                                     </div>
                                     <div className="bar-container">
-                                        <div className="bar bar-expected" style={{width: `${expectedPercentage}%`}}></div>
+                                        <div className="bar bar-expected" style={{width: '100%'}}></div>
                                     </div>
                                 </div>
 
@@ -550,26 +575,35 @@
                             </div>
                         </div>
 
-                        {/* Root Cause */}
+                        {/* ── Root Cause Analysis ── */}
                         <div className="card">
                             <div className="card-title">Root Cause Analysis</div>
-                            
+
                             <div className="alert">
                                 <div className="alert-header">
                                     <div className="alert-icon">⚡</div>
                                     <div className="alert-title">Equipment Failure Detected</div>
                                 </div>
-                                
+
                                 <div className="alert-details">
                                     <p><strong>Affected Equipment:</strong></p>
                                     <div style={{marginTop: '0.5rem'}}>
                                         <span className="equipment-tag">Inverter #23</span>
                                         <span className="equipment-tag">100 kW Capacity</span>
                                     </div>
-                                    
-                                    <p style={{marginTop: '1rem'}}><strong>Status:</strong> Offline since 11:30 AM</p>
-                                    <p><strong>Elapsed Time:</strong> {elapsedHours.toFixed(1)} hours</p>
-                                    <p><strong>Cost So Far:</strong> <span style={{color: 'var(--accent-red)', fontWeight: 700}}>€{costSoFar.toFixed(0)}</span></p>
+
+                                    <p style={{marginTop: '1rem'}}>
+                                        <strong>Status:</strong> Offline since 11:30 AM
+                                    </p>
+                                    <p>
+                                        <strong>Elapsed Time:</strong> {elapsedHours.toFixed(1)} hours
+                                    </p>
+                                    <p>
+                                        <strong>Cost So Far: </strong>
+                                        <span style={{color: 'var(--accent-red)', fontWeight: 700}}>
+                                            €{Math.round(costSoFar).toLocaleString()}
+                                        </span>
+                                    </p>
                                 </div>
                             </div>
 
@@ -578,29 +612,33 @@
                             </button>
 
                             <div style={{marginTop: '1rem', fontSize: '0.875rem', color: 'var(--text-secondary)', textAlign: 'center'}}>
-                                ⏱️ Estimated repair: 2-4 hours<br/>
-                                💰 If fixed in 2 hours: <span style={{color: 'var(--accent-green)', fontWeight: 700}}>Save €7,000 today</span>
+                                ⏱️ Estimated repair: 2–4 hours<br/>
+                                💰 If fixed in 2 hours: <span style={{color: 'var(--accent-green)', fontWeight: 700}}>
+                                    Save €{Math.round(savingsIf2hr > 0 ? savingsIf2hr : 700).toLocaleString()} today
+                                </span>
                             </div>
                         </div>
 
-                        {/* Timeline */}
+                        {/* ── Revenue Loss Timeline ── */}
                         <div className="card">
                             <div className="card-title">Revenue Loss Timeline</div>
-                            
+
                             <div className="timeline">
                                 <div className="timeline-item">
                                     <div className="timeline-time">11:30 AM</div>
                                     <div className="timeline-content">
                                         <div className="timeline-event">Inverter #23 went offline</div>
-                                        <div className="timeline-cost">Initial detection</div>
+                                        <div className="timeline-cost">Initial detection — €0</div>
                                     </div>
                                 </div>
 
                                 <div className="timeline-item">
                                     <div className="timeline-time">12:00 PM</div>
                                     <div className="timeline-content">
-                                        <div className="timeline-event">30 minutes elapsed</div>
-                                        <div className="timeline-cost">Loss: €175</div>
+                                        <div className="timeline-event">0.5 hours elapsed</div>
+                                        <div className="timeline-cost">
+                                            Loss: €{Math.round(0.5 * HOURLY_LOSS).toLocaleString()}
+                                        </div>
                                     </div>
                                 </div>
 
@@ -608,15 +646,29 @@
                                     <div className="timeline-time">01:00 PM</div>
                                     <div className="timeline-content">
                                         <div className="timeline-event">1.5 hours elapsed</div>
-                                        <div className="timeline-cost">Loss: €525</div>
+                                        <div className="timeline-cost">
+                                            Loss: €{Math.round(1.5 * HOURLY_LOSS).toLocaleString()}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="timeline-item">
+                                    <div className="timeline-time">03:00 PM</div>
+                                    <div className="timeline-content">
+                                        <div className="timeline-event">3.5 hours elapsed</div>
+                                        <div className="timeline-cost">
+                                            Loss: €{Math.round(3.5 * HOURLY_LOSS).toLocaleString()}
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div className="timeline-item" style={{borderBottom: 'none'}}>
-                                    <div className="timeline-time">NOW</div>
+                                    <div className="timeline-time" style={{color: 'var(--accent-red)', fontWeight: 700}}>NOW</div>
                                     <div className="timeline-content">
                                         <div className="timeline-event">{elapsedHours.toFixed(1)} hours elapsed</div>
-                                        <div className="timeline-cost">Total Loss: €{costSoFar.toFixed(0)}</div>
+                                        <div className="timeline-cost" style={{fontSize: '1rem', fontWeight: 700}}>
+                                            Total Loss: €{Math.round(costSoFar).toLocaleString()}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -626,7 +678,7 @@
                                     ⏰ Every minute of delay costs:
                                 </div>
                                 <div style={{fontSize: '1.5rem', fontWeight: 700, color: 'var(--accent-orange)', fontFamily: 'JetBrains Mono'}}>
-                                    €5.83/minute
+                                    €{COST_PER_MINUTE.toFixed(2)}/minute
                                 </div>
                             </div>
                         </div>
@@ -634,15 +686,25 @@
 
                     {/* Footer */}
                     <div className="footer">
-                        <div className="demo-badge">LIVE DEMO</div>
-                        <p>This is a simulated demonstration of the Revenue Intelligence™ platform.</p>
+                        <div className="demo-badge">LIVE DEMO — SIMULATED DATA</div>
+                        <p>Revenue Intelligence™ platform demonstration for Amperecloud.</p>
                         <p style={{marginTop: '0.5rem'}}>
-                            Real implementation connects to your SCADA, PPA contracts, and weather APIs<br/>
-                            to provide accurate, real-time revenue intelligence.
+                            Production implementation connects to SCADA, PPA contracts, and weather APIs<br/>
+                            to deliver accurate, real-time revenue intelligence across your portfolio.
                         </p>
-                        <p style={{marginTop: '1.5rem', fontSize: '0.75rem'}}>
-                            <strong>For Konrad Perényi - Amperecloud</strong><br/>
-                            The €50M problem you didn't know you had. The solution you can build in 6 weeks.
+
+                        <div className="footnote">
+                            <strong>Methodology:</strong> Daily and monthly impact figures reflect
+                            the <em>active incident loss rate</em> (€{HOURLY_LOSS}/hr × 24hr) for
+                            operational urgency. The annual projection is weighted by <strong>4.5
+                            Peak Sun Hours (PSH)</strong> — the effective daily generation
+                            window — yielding a physics-informed estimate of €{annualLoss.toLocaleString()}/yr.
+                            Production calculations integrate real-time irradiance (W/m²),
+                            temperature-corrected efficiency, and historical yield data.
+                        </div>
+
+                        <p style={{marginTop: '1.5rem', fontSize: '0.7rem', color: 'var(--text-secondary)'}}>
+                            © 2026 Mohamed Mekky. All Rights Reserved.
                         </p>
                     </div>
                 </div>
