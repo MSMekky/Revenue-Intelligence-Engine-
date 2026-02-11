@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revenue Intelligence™ - Live Demo</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Dark sophisticated palette */
+            --bg-primary: #0a0e14;
+            --bg-secondary: #151b26;
+            --bg-card: #1a2332;
+            --accent-green: #00ff88;
+            --accent-red: #ff4757;
+            --accent-orange: #ffa502;
+            --accent-blue: #3742fa;
+            --text-primary: #e8eef7;
+            --text-secondary: #8b95a8;
+            --border: rgba(255, 255, 255, 0.08);
+            --glow-green: rgba(0, 255, 136, 0.2);
+            --glow-red: rgba(255, 71, 87, 0.2);
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated background grid */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-move 20s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes grid-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            color: var(--accent-green);
+        }
+
+        .pulse {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 0 10px var(--glow-green);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        /* Main Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--accent-green), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-title {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        /* Hero Stats */
+        .hero-stat {
+            grid-column: span 2;
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(255, 71, 87, 0.05) 100%);
+            border: 2px solid var(--accent-red);
+            box-shadow: 0 0 30px var(--glow-red);
+        }
+
+        .stat-value {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1;
+            margin: 1rem 0;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-label {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-impact {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .impact-item {
+            flex: 1;
+        }
+
+        .impact-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .impact-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-red);
+        }
+
+        /* Revenue Comparison */
+        .revenue-bars {
+            margin-top: 2rem;
+        }
+
+        .revenue-row {
+            margin-bottom: 1rem;
+        }
+
+        .revenue-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .bar-container {
+            width: 100%;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bar {
+            height: 100%;
+            transition: width 1s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .bar-expected {
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+        }
+
+        .bar-actual {
+            background: linear-gradient(90deg, var(--accent-orange), var(--accent-red));
+        }
+
+        /* Root Cause Alert */
+        .alert {
+            background: linear-gradient(135deg, rgba(255, 71, 87, 0.1) 0%, rgba(255, 71, 87, 0.05) 100%);
+            border-left: 4px solid var(--accent-red);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 1.5rem;
+        }
+
+        .alert-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .alert-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-red);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            animation: shake 0.5s ease-in-out infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            75% { transform: translateX(2px); }
+        }
+
+        .alert-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--accent-red);
+        }
+
+        .alert-details {
+            margin-left: 2.5rem;
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        .equipment-tag {
+            display: inline-block;
+            background: rgba(255, 71, 87, 0.2);
+            color: var(--accent-red);
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            margin: 0.25rem 0.25rem 0.25rem 0;
+        }
+
+        /* Action Button */
+        .action-button {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-red), #ff6b81);
+            color: white;
+            border: none;
+            padding: 1.25rem 2rem;
+            border-radius: 12px;
+            font-size: 1.125rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 10px 30px rgba(255, 71, 87, 0.3);
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(255, 71, 87, 0.4);
+        }
+
+        .action-button:active {
+            transform: translateY(0);
+        }
+
+        /* Metrics Grid */
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .metric {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-green);
+        }
+
+        /* Timeline */
+        .timeline {
+            margin-top: 2rem;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .timeline-time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            min-width: 80px;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-event {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-cost {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-red);
+            font-size: 0.875rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .demo-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function RevenueIntelligenceDemo() {
+            const [currentLoss, setCurrentLoss] = useState(350);
+            const [expectedRevenue, setExpectedRevenue] = useState(3800);
+            const [actualRevenue, setActualRevenue] = useState(3450);
+            const [elapsedHours, setElapsedHours] = useState(2.3);
+            const [costSoFar, setCostSoFar] = useState(805);
+
+            // Simulate real-time updates
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    setElapsedHours(prev => prev + 0.1);
+                    setCostSoFar(prev => prev + (350 / 60)); // €350/hour = €5.83/min
+                }, 6000); // Update every 6 seconds for demo
+
+                return () => clearInterval(interval);
+            }, []);
+
+            const dailyLoss = currentLoss * 24;
+            const monthlyLoss = dailyLoss * 30;
+            const yearlyLoss = dailyLoss * 365;
+
+            const expectedPercentage = 100;
+            const actualPercentage = (actualRevenue / expectedRevenue) * 100;
+
+            return (
+                <div className="container">
+                    {/* Header */}
+                    <div className="header">
+                        <div className="logo">REVENUE INTELLIGENCE™</div>
+                        <div className="status">
+                            <div className="pulse"></div>
+                            <span>LIVE MONITORING • Solar Plant A</span>
+                        </div>
+                    </div>
+
+                    {/* Main Grid */}
+                    <div className="grid">
+                        {/* Hero - Current Leakage */}
+                        <div className="card hero-stat">
+                            <div className="card-title">⚠️ CRITICAL: Revenue Leakage Detected</div>
+                            <div className="stat-label">Current Loss Rate</div>
+                            <div className="stat-value" style={{color: 'var(--accent-red)'}}>
+                                €{currentLoss.toLocaleString()}/hr
+                            </div>
+                            
+                            <div className="stat-impact">
+                                <div className="impact-item">
+                                    <div className="impact-label">Daily Impact</div>
+                                    <div className="impact-value">€{dailyLoss.toLocaleString()}</div>
+                                </div>
+                                <div className="impact-item">
+                                    <div className="impact-label">Monthly Impact</div>
+                                    <div className="impact-value">€{monthlyLoss.toLocaleString()}</div>
+                                </div>
+                                <div className="impact-item">
+                                    <div className="impact-label">Annual Impact</div>
+                                    <div className="impact-value">€{yearlyLoss.toLocaleString()}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Revenue Comparison */}
+                        <div className="card">
+                            <div className="card-title">Real-Time Revenue Analysis</div>
+                            
+                            <div className="revenue-bars">
+                                <div className="revenue-row">
+                                    <div className="revenue-label">
+                                        <span>Expected Revenue</span>
+                                        <span style={{color: 'var(--accent-green)', fontFamily: 'JetBrains Mono'}}>
+                                            €{expectedRevenue.toLocaleString()}/hr
+                                        </span>
+                                    </div>
+                                    <div className="bar-container">
+                                        <div className="bar bar-expected" style={{width: `${expectedPercentage}%`}}></div>
+                                    </div>
+                                </div>
+
+                                <div className="revenue-row">
+                                    <div className="revenue-label">
+                                        <span>Actual Revenue</span>
+                                        <span style={{color: 'var(--accent-red)', fontFamily: 'JetBrains Mono'}}>
+                                            €{actualRevenue.toLocaleString()}/hr
+                                        </span>
+                                    </div>
+                                    <div className="bar-container">
+                                        <div className="bar bar-actual" style={{width: `${actualPercentage}%`}}></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="metrics">
+                                <div className="metric">
+                                    <div className="metric-label">Performance</div>
+                                    <div className="metric-value">{actualPercentage.toFixed(1)}%</div>
+                                </div>
+                                <div className="metric">
+                                    <div className="metric-label">Data Quality</div>
+                                    <div className="metric-value">98.7%</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Root Cause */}
+                        <div className="card">
+                            <div className="card-title">Root Cause Analysis</div>
+                            
+                            <div className="alert">
+                                <div className="alert-header">
+                                    <div className="alert-icon">⚡</div>
+                                    <div className="alert-title">Equipment Failure Detected</div>
+                                </div>
+                                
+                                <div className="alert-details">
+                                    <p><strong>Affected Equipment:</strong></p>
+                                    <div style={{marginTop: '0.5rem'}}>
+                                        <span className="equipment-tag">Inverter #23</span>
+                                        <span className="equipment-tag">100 kW Capacity</span>
+                                    </div>
+                                    
+                                    <p style={{marginTop: '1rem'}}><strong>Status:</strong> Offline since 11:30 AM</p>
+                                    <p><strong>Elapsed Time:</strong> {elapsedHours.toFixed(1)} hours</p>
+                                    <p><strong>Cost So Far:</strong> <span style={{color: 'var(--accent-red)', fontWeight: 700}}>€{costSoFar.toFixed(0)}</span></p>
+                                </div>
+                            </div>
+
+                            <button className="action-button">
+                                🚨 Dispatch Technician Now
+                            </button>
+
+                            <div style={{marginTop: '1rem', fontSize: '0.875rem', color: 'var(--text-secondary)', textAlign: 'center'}}>
+                                ⏱️ Estimated repair: 2-4 hours<br/>
+                                💰 If fixed in 2 hours: <span style={{color: 'var(--accent-green)', fontWeight: 700}}>Save €7,000 today</span>
+                            </div>
+                        </div>
+
+                        {/* Timeline */}
+                        <div className="card">
+                            <div className="card-title">Revenue Loss Timeline</div>
+                            
+                            <div className="timeline">
+                                <div className="timeline-item">
+                                    <div className="timeline-time">11:30 AM</div>
+                                    <div className="timeline-content">
+                                        <div className="timeline-event">Inverter #23 went offline</div>
+                                        <div className="timeline-cost">Initial detection</div>
+                                    </div>
+                                </div>
+
+                                <div className="timeline-item">
+                                    <div className="timeline-time">12:00 PM</div>
+                                    <div className="timeline-content">
+                                        <div className="timeline-event">30 minutes elapsed</div>
+                                        <div className="timeline-cost">Loss: €175</div>
+                                    </div>
+                                </div>
+
+                                <div className="timeline-item">
+                                    <div className="timeline-time">01:00 PM</div>
+                                    <div className="timeline-content">
+                                        <div className="timeline-event">1.5 hours elapsed</div>
+                                        <div className="timeline-cost">Loss: €525</div>
+                                    </div>
+                                </div>
+
+                                <div className="timeline-item" style={{borderBottom: 'none'}}>
+                                    <div className="timeline-time">NOW</div>
+                                    <div className="timeline-content">
+                                        <div className="timeline-event">{elapsedHours.toFixed(1)} hours elapsed</div>
+                                        <div className="timeline-cost">Total Loss: €{costSoFar.toFixed(0)}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style={{marginTop: '1.5rem', padding: '1rem', background: 'rgba(255, 165, 2, 0.1)', borderRadius: '12px', border: '1px solid var(--accent-orange)'}}>
+                                <div style={{fontSize: '0.875rem', color: 'var(--text-secondary)', marginBottom: '0.5rem'}}>
+                                    ⏰ Every minute of delay costs:
+                                </div>
+                                <div style={{fontSize: '1.5rem', fontWeight: 700, color: 'var(--accent-orange)', fontFamily: 'JetBrains Mono'}}>
+                                    €5.83/minute
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Footer */}
+                    <div className="footer">
+                        <div className="demo-badge">LIVE DEMO</div>
+                        <p>This is a simulated demonstration of the Revenue Intelligence™ platform.</p>
+                        <p style={{marginTop: '0.5rem'}}>
+                            Real implementation connects to your SCADA, PPA contracts, and weather APIs<br/>
+                            to provide accurate, real-time revenue intelligence.
+                        </p>
+                        <p style={{marginTop: '1.5rem', fontSize: '0.75rem'}}>
+                            <strong>For Konrad Perényi - Amperecloud</strong><br/>
+                            The €50M problem you didn't know you had. The solution you can build in 6 weeks.
+                        </p>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<RevenueIntelligenceDemo />, document.getElementById('root'));
+    </script>
+</body>
+</html>
